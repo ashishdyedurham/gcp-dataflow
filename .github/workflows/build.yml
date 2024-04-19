@@ -1,0 +1,43 @@
+name: Build Dataflow Flex Template
+
+on:
+  workflow_dispatch:
+    inputs:
+      env:
+        type: choice
+        description: Make a choice
+        options:
+        - main  
+        - dev
+        - stage
+
+env:
+  GCP_REGION: us-central1
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Configure Google Cloud CLI
+      uses: google-github-actions/setup-gcloud@v0.3.0
+   #   uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        export_default_credentials: true
+ 
+    - name: Build Dataflow Flex Template
+      run: |
+        gcloud dataflow flex-template build gs://${{BUCKET_NAME}}/getting_started-py.json \
+        --image-gcr-path "${{GCP_REGION}}-docker.pkg.dev/${{PROJECT_ID}}/Data-flow-testing_flex/getting-started-python:latest" \
+        --sdk-language "PYTHON" \
+        --flex-template-base-image "PYTHON3" \
+        --metadata-file "metadata.json" \
+        --py-path "." \
+        --env "FLEX_TEMPLATE_PYTHON_PY_FILE=test.py" \
+        --env "FLEX_TEMPLATE_PYTHON_REQUIREMENTS_FILE=requirements.txt"
+
