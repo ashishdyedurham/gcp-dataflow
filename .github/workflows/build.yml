@@ -33,7 +33,7 @@ jobs:
     - name: Build Dataflow Flex Template
       run: |
         gcloud dataflow flex-template build gs://${{BUCKET_NAME}}/getting_started-py.json \
-        --image-gcr-path "${{GCP_REGION}}-docker.pkg.dev/${{PROJECT_ID}}/Data-flow-testing_flex/getting-started-python:latest" \
+        --image-gcr-path "${{GCP_REGION}}-docker.pkg.dev/${{PROJECT_ID}}/dataflow-testing/getting-started-python:latest" \
         --sdk-language "PYTHON" \
         --flex-template-base-image "PYTHON3" \
         --metadata-file "metadata.json" \
