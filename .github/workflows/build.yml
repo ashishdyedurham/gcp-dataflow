@@ -41,4 +41,10 @@ jobs:
         --py-path "." \
         --env "FLEX_TEMPLATE_PYTHON_PY_FILE=test.py" \
         --env "FLEX_TEMPLATE_PYTHON_REQUIREMENTS_FILE=requirements.txt"
-
+    
+    - name: Run Dataflow Flex Template
+      run: |
+        gcloud dataflow flex-template run "flex-$(date +'%Y%m%d-%H%M%S')" \
+        --template-file-gcs-location "gs://${{ env.BUCKET_NAME }}/getting_started_py.json" \
+        --region {{ env.GCP_REGION }} \
+        --parameters output="gs://${{ env.BUCKET_NAME }}/output-"
