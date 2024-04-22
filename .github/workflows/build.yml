@@ -41,6 +41,9 @@ jobs:
         --py-path "." \
         --env "FLEX_TEMPLATE_PYTHON_PY_FILE=test.py" \
         --env "FLEX_TEMPLATE_PYTHON_REQUIREMENTS_FILE=requirements.txt"
+      
+      env:
+        PORT: 8080
     
     - name: Run Dataflow Flex Template
       run: |
